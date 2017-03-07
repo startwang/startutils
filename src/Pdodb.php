@@ -15,7 +15,7 @@
 
 namespace Start\Utils;
 
-class Pdo
+class Pdodb
 {
     /**
      * 单例
