@@ -52,8 +52,8 @@ class Pdodb
             } else{
                 $dsn = 'sqlsrv:Server=' . $host.  ';Database=' . $dbName . ';charset=' . $charset;
             }
-            $this->link = new PDO($dsn, $user, $pwd);
-        } catch (PDOException $e){
+            $this->link = new \PDO($dsn, $user, $pwd);
+        } catch (\PDOException $e){
             $this->showError($e->getMessage());
         }
     }
@@ -97,7 +97,7 @@ class Pdodb
         $recordSet = $this->link->query($sql);
         $this->getPDOError();
         if($recordSet){
-            $recordSet->setFetchMode(PDO::FETCH_ASSOC);
+            $recordSet->setFetchMode(\PDO::FETCH_ASSOC);
             if($queryMode == 'All'){
                 $result = $recordSet->fetchAll();
             } else {
@@ -286,7 +286,7 @@ class Pdodb
         $fields = array();
         $recordSet = $this->link->query('SHOW COLUMNS FROM '. $table);
         $this->getPDOError();
-        $recordSet->setFetchMode(PDO::FETCH_ASSOC);
+        $recordSet->setFetchMode(\PDO::FETCH_ASSOC);
         $result = $recordSet->fetchAll();
         foreach ($result as $item) {
             $fields[] = $item['Field'];
