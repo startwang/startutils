@@ -1,0 +1,21 @@
+{
+    "name"          :   "start/startutils",
+    "description"   :   "This is start's utils",
+    "type"          :   "library",
+    "license"       :   "MIT",
+    "keywords"      :   ["utils", "start"],
+    "authors"       :   [
+                          {
+                              "name": "start",
+                             "email": "start_wang@qq.com"
+                          }
+                        ],
+    "require"       :   {
+                          "php":  ">=5.6.0"
+                        },
+    "autoload"      :   {
+                          "psr-4": {
+                            "Start\\Utils\\": ""
+                          }
+                        }
+}
