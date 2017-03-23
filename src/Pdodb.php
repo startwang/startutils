@@ -182,6 +182,18 @@ class Pdodb
     }
 
     /**
+     * 获取最后插入id
+     * @return bool|string
+     * @author start
+     */
+    public function lastInsertId(){
+        if(!$this->link){
+            return false;
+        }
+        return $this->link->lastInsertId();
+    }
+
+    /**
      * 执行sql
      * @param $sql
      * @return int
