@@ -32,16 +32,16 @@ class Page
     );
 
     public function __construct($total, $listRow = 10, $pa=''){
-        $this->total = $total;
-        $this->listRow = $listRow;
-        $this->uri = $this->getURI($pa);
-        $this->pageNum = ceil($this->total/$this->listRow);
-        $this->page = !empty($_GET['page'])?$_GET['page']:1;
+        $this->total    = $total;
+        $this->listRow  = $listRow;
+        $this->uri      = $this->getURI($pa);
+        $this->pageNum  = ceil($this->total/$this->listRow);
+        $this->page     = !empty($_GET['page'])?$_GET['page']:1;
         if($this->page<1){
-            $this->page=1;
+            $this->page = 1;
         }
         if($this->page>$this->pageNum){
-            $this->page=$this->pageNum;
+            $this->page = $this->pageNum;
         }
         $this->limit = $this->setLimit();
     }
@@ -99,10 +99,10 @@ class Page
     }
 
     public function pageList(){
-        $start = $this->page>$this->lnum?$this->page-$this->lnum:1;
-        $end = $this->page+$this->lnum<=$this->pageNum?$this->page+$this->lnum:$this->pageNum;
+        $start = $this->page>$this->lnum ? $this->page-$this->lnum :1;
+        $end = $this->page+$this->lnum <= $this->pageNum ? $this->page+$this->lnum : $this->pageNum;
         $pageLink='';
-        for ($i=$start;$i<=$end;$i++){
+        for ($i = $start; $i <= $end; $i++){
             if ($this->page == $i) {
                 $pageLink .= '&nbsp'.$i.'&nbsp';
             } else {
