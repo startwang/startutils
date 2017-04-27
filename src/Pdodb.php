@@ -44,7 +44,7 @@ class Pdodb
      * @param string $type
      * @param string $charset
      */
-    private function __construct($host, $user, $pwd, $dbName, $type = 'mysql', $charset = 'utf8')
+    public function __construct($host, $user, $pwd, $dbName, $type = 'mysql', $charset = 'utf8')
     {
         try{
             if($type == 'mysql'){
