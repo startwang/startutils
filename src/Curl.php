@@ -43,6 +43,12 @@ class Curl
     public $hostIp;
 
     /**
+     * 要host的数组
+     * @var
+     */
+    public $hostArray;
+
+    /**
      * 用户 - 域验证
      * @var
      */
@@ -444,6 +450,10 @@ class Curl
             preg_match('#https?://(.*?)($|/)#m', $url, $urlResult);
             $resolve = array(sprintf("%s:%d:%s", $urlResult[1], $this->port, $this->hostIp));
             curl_setopt($ch, defined('CURLOPT_RESOLVE') ? CURLOPT_RESOLVE : CURLOPT_IPRESOLVE, $resolve);
+        }
+
+        if ($this->hostArray){
+            curl_setopt($ch, defined('CURLOPT_RESOLVE') ? CURLOPT_RESOLVE : CURLOPT_IPRESOLVE, $this->hostArray);
         }
 
         foreach($this->options as $key => $value){
