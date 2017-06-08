@@ -169,7 +169,9 @@ class Curl
      */
     public function __construct()
     {
-        $this->userAgent = $_SERVER['HTTP_USER_AGENT'];
+        if (isset($_SERVER['HTTP_USER_AGENT'])) {
+            $this->userAgent = $_SERVER['HTTP_USER_AGENT'];
+        }
         $this->cookieFile = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'startutils_curlcookie.txt';
     }
 
