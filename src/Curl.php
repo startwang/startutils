@@ -264,10 +264,12 @@ class Curl
             $this->error .= curl_errno($ch) . ':' . curl_error($ch).'<br>';
         }
 
+        $curlInfo = curl_getinfo($ch);
+
         curl_close($ch);
 
         if($this->callback && is_callable($this->callback)){
-            call_user_func($this->callback, $result);
+            call_user_func($this->callback, $result, $curlInfo);
         }
         return $result;
     }
@@ -313,11 +315,13 @@ class Curl
                 unset($this->multiErrorUrls[array_search($url, $this->multiErrorUrls)]);
             }
 
+            $curlInfo  = curl_getinfo($ch[$key]);
+
             if($this->callback && is_callable($this->callback)){
                 call_user_func($this->callback, $result[$key]);
             }
 
-            curl_multi_remove_handle($handle, $ch[$key]);
+            curl_multi_remove_handle($handle, $ch[$key], $curlInfo);
         }
         curl_multi_close($handle);
 
