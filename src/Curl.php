@@ -318,10 +318,10 @@ class Curl
             $curlInfo  = curl_getinfo($ch[$key]);
 
             if($this->callback && is_callable($this->callback)){
-                call_user_func($this->callback, $result[$key]);
+                call_user_func($this->callback, $result[$key], $curlInfo);
             }
 
-            curl_multi_remove_handle($handle, $ch[$key], $curlInfo);
+            curl_multi_remove_handle($handle, $ch[$key]);
         }
         curl_multi_close($handle);
 
