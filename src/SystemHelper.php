@@ -94,10 +94,7 @@ class SystemHelper
      */
     public static function createFile($file, $content = '')
     {
-        if (!file_exists($file)){
-            return file_put_contents($file, $content);
-        }
-        return false;
+        return file_put_contents($file, $content);
     }
 
     /**
