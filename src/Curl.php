@@ -133,6 +133,12 @@ class Curl
     protected $error = '';
 
     /**
+     * curl信息
+     * @var array
+     */
+    protected $curlInfo = [];
+
+    /**
      * @return string
      */
     public function getError()
@@ -266,7 +272,7 @@ class Curl
             $this->error .= curl_errno($ch) . ':' . curl_error($ch).'<br>';
         }
 
-        $curlInfo = curl_getinfo($ch);
+        $this->curlInfo = $curlInfo = curl_getinfo($ch);
 
         curl_close($ch);
 
@@ -317,7 +323,7 @@ class Curl
                 unset($this->multiErrorUrls[array_search($url, $this->multiErrorUrls)]);
             }
 
-            $curlInfo  = curl_getinfo($ch[$key]);
+            $this->curlInfo = $curlInfo  = curl_getinfo($ch[$key]);
 
             if($this->callback && is_callable($this->callback)){
                 call_user_func($this->callback, $result[$key], $curlInfo);
