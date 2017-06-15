@@ -155,6 +155,16 @@ class Curl
     }
 
     /**
+     * 获取curl信息
+     * @return array
+     * @author start
+     */
+    public function getCurlInfo()
+    {
+        return $this->curlInfo;
+    }
+
+    /**
      * @return mixed
      */
     public function getUserAgent()
