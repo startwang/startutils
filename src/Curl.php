@@ -318,24 +318,37 @@ class Curl
      */
     public function multi($method, $urls, $param = array())
     {
-        $ch = $result = array();
+        $ch     = $result = [];
         $handle = curl_multi_init();
-        foreach($urls as $key => $url){
+        foreach ($urls as $key => $url) {
             $this->retryMulti[$url] = $this->retry;
-            $ch[$key] = $this->addHandle($handle, $method, $url, !empty($param[$key])?$param[$key]:'');
+
+            $ch[$key] = $this->addHandle(
+                $handle,
+                $method,
+                $url,
+                !empty($param[$key]) ? $param[$key] : ''
+            );
         }
 
         $this->execHandle($handle);
-        foreach($urls as $key => $url){
-            $result[$key] = $this->multiExec($ch[$key], $url);
+        foreach ($urls as $key => $url) {
+            parse_str(parse_url($url)['query'], $resultParam);
+            $resultParam['file'] = pathinfo($url)['filename'];
 
-            if($result[$key] && in_array($url, $this->multiErrorUrls)){
+            $result[$key] = [];
+            $result[$key]['url'] = $url;
+            $result[$key]['param'] = $resultParam;
+            $result[$key]['response'] = $this->multiExec($ch[$key], $url);
+
+            if ($result[$key] && in_array($url, $this->multiErrorUrls)) {
                 unset($this->multiErrorUrls[array_search($url, $this->multiErrorUrls)]);
             }
 
-            $this->curlInfo = $curlInfo  = curl_getinfo($ch[$key]);
+            $this->curlInfo[] = $curlInfo = curl_getinfo($ch[$key]);
+            $result[$key]['curlInfo'] = $curlInfo;
 
-            if($this->callback && is_callable($this->callback)){
+            if ($this->callback && is_callable($this->callback)) {
                 call_user_func($this->callback, $result[$key], $curlInfo);
             }
 
@@ -396,10 +409,17 @@ class Curl
      */
     public function execHandle($handle)
     {
-        $flag = null;
-        do{
-            curl_multi_exec($handle, $flag);
-        } while ($flag > 0);
+        do {
+            $mrc = curl_multi_exec($handle, $active);
+        } while ($mrc == CURLM_CALL_MULTI_PERFORM);
+
+        while ($active and $mrc == CURLM_OK) {
+            if (curl_multi_select($handle) != -1) {
+                do {
+                    $mrc = curl_multi_exec($handle, $active);
+                } while ($mrc == CURLM_CALL_MULTI_PERFORM);
+            }
+        }
     }
 
     /**
